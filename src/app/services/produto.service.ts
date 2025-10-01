@@ -14,4 +14,13 @@ export class ProdutoService {
   getAllProdutos(): Promise<Produto[]> {
     return this.dbService.produtos.toArray();
   }
+  updateProduto(produto: Produto) {
+    return this.dbService.produtos.put(produto);
+  }
+  deleteProduto(id: number) {
+    return this.dbService.produtos.delete(id);
+  }
+  getProdutoByID(id: number) {
+    return this.dbService.produtos.get(id);
+  }
 }

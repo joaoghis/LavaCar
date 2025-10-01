@@ -10,6 +10,7 @@
                         <th scope="col" class="text-center">Preço</th>
                         <th scope="col" class="text-center">Quantidade</th>
                         <th scope="col" class="text-center">Fornecedor</th>
+                        <th scope="col" class="text-center">Opções</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,6 +21,10 @@
                             <td class="text-center">{{ produto.preco }}</td>
                             <td class="text-center">{{ produto.quantidade }}</td>
                             <td class="text-center">{{ produto.nomeFornecedor }}</td>
+                            <td class="text-center">
+                                <i class="bi bi-pen edit-icon" (click)="editProduto(produto.id!)"></i>
+                                <i class="bi bi-trash mx-2" (click)="deleteProduto(produto.id!)"></i>
+                            </td>
                         </tr>
                     }
                 </tbody>

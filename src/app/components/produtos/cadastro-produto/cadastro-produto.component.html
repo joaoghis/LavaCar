@@ -1,6 +1,10 @@
 <div class="container">
     <div class="col-md-6 offset-md-3">
-        <h1 class="text-center">Cadastrar Produto</h1>
+        @if(produtoId){
+            <h1 class="text-center">Editar Produto</h1>
+         }@else{
+            <h1 class="text-center">Cadastrar Produto</h1>
+         }
         <form [formGroup]="formProduto" (ngSubmit)="addProduto()" class="mb-5">
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome do Produto:</label>

@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Fornecedor } from '../../../models/fornecedor.model';
 import { FornecedorService } from '../../../services/fornecedor.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastro-produto',
@@ -22,24 +23,58 @@ export class CadastroProdutoComponent implements OnInit {
     fornecedorId: [null as number | null, Validators.required]
   });
   fornecedores: Fornecedor[] = [];
-  constructor(private produtoService: ProdutoService, private fornecedorService: FornecedorService) {
+  produtoId!: number;
+  constructor(private produtoService: ProdutoService, private fornecedorService: FornecedorService, private route: ActivatedRoute, private router: Router) {
   }
-  ngOnInit() {
+  async ngOnInit() {
     this.loadFornecedores();
+    this.produtoId = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.produtoId) {
+      const produto = await this.produtoService.getProdutoByID(this.produtoId);
+      if (produto) {
+        this.formProduto.patchValue({
+          nome: produto.nome,
+          preco: Number(produto.preco),
+          quantidade: Number(produto.quantidade),
+          fornecedorId: Number(produto.fornecedorId)
+        });
+      };
+    }
   }
   addProduto() {
     if (this.formProduto.valid) {
-      const novoProduto: Produto = {
+      if (!this.produtoId) {
+        const novoProduto: Produto = {
+          nome: this.formProduto.value.nome!,
+          preco: Number(this.formProduto.value.preco!),
+          quantidade: Number(this.formProduto.value.quantidade!),
+          fornecedorId: Number(this.formProduto.value.fornecedorId!)
+        };
+        this.produtoService.addProduto(novoProduto).then(() => {
+          Swal.fire('Cadastro realizado!', 'O produto foi cadastrado com sucesso!', 'success');
+          this.router.navigate(['produtos/listar-produtos']);
+        });
+      } else {
+        this.editProduto();
+      }
+    } 
+  }
+  editProduto() {
+    if (this.formProduto.valid) {
+      const produtoEditado: Produto = {
+        id: this.produtoId,
         nome: this.formProduto.value.nome!,
         preco: Number(this.formProduto.value.preco!),
         quantidade: Number(this.formProduto.value.quantidade!),
         fornecedorId: Number(this.formProduto.value.fornecedorId!)
       };
-      this.produtoService.addProduto(novoProduto).then(() => {
-        Swal.fire('Cadastro realizado!', 'O produto foi cadastrado com sucesso!', 'success');
+      this.produtoService.updateProduto(produtoEditado).then(() => {
+        Swal.fire('Cadastro realizado!', 'O produto foi atualizado com sucesso.', 'success');
+        this.router.navigate(['produtos/listar-produtos']);
       });
     }
   }
+
   loadFornecedores() {
     this.fornecedorService.getAllFornecedores().then(fornecedores => {
       this.fornecedores = fornecedores;
