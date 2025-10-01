@@ -1,0 +1,31 @@
+<div class="container">
+    @if(produtos.length > 0){
+        <div class="row col-md-8 offset-md-2">
+            <h1 class="text-center">Produtos Cadastrados</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">#</th>
+                        <th scope="col" class="text-center">Nome</th>
+                        <th scope="col" class="text-center">Preço</th>
+                        <th scope="col" class="text-center">Quantidade</th>
+                        <th scope="col" class="text-center">Fornecedor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (produto of produtos; track produto.id) {
+                        <tr>
+                            <th scope="row" class="text-center">{{ produto.id}}</th>
+                            <td>{{ produto.nome }}</td>
+                            <td class="text-center">{{ produto.preco }}</td>
+                            <td class="text-center">{{ produto.quantidade }}</td>
+                            <td class="text-center">{{ produto.nomeFornecedor }}</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }@else {
+        <div class="row"><h1 class="text-center">Nenhum Produto Cadastrado</h1></div>
+    }
+</div>

@@ -2,25 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Fornecedor } from '../../../models/fornecedor.model';
 import { FornecedorService } from '../../../services/fornecedor.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cadastro-fornecedor',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './cadastro-fornecedor.component.html',
   styleUrl: './cadastro-fornecedor.component.css'
 })
+
 export class CadastroFornecedorComponent implements OnInit {
   fornecedores: Fornecedor[] = [];
   fornecedorId!: number;
   formFornecedor = new FormGroup({
-    nome: new FormControl(''),
-    cnpj: new FormControl(''),
-    fone: new FormControl('')
+    nome: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    cnpj: new FormControl('', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]),
+    fone: new FormControl('', [Validators.required, Validators.minLength(11), Validators.maxLength(11)])
   });
   
-  constructor(private fornecedorService: FornecedorService, private router: RTCOutboundRtpStreamStats, private route: ActivatedRoute) {}
+  constructor(private fornecedorService: FornecedorService, private router: Router, private route: ActivatedRoute) {}
   async ngOnInit() {
     this.fornecedorId = Number(this.route.snapshot.paramMap.get('id'));
     if (this.fornecedorId) {

@@ -18,6 +18,11 @@
                     <td>{{ fornecedor.nome }}</td>
                     <td>{{ fornecedor.cnpj }}</td>
                     <td>{{ fornecedor.fone }}</td>
+                    <td class="text-center">
+                        <i class="bi bi-pen edit-icon" (click)="editFornecedor(fornecedor.id!)"></i>
+                        <i class="bi bi-trash mx-2" (click)="deleteFornecedor(fornecedor.id!)"></i>
+                    </td>
+                
                 </tr>
                 }
             </tbody>
@@ -25,7 +30,7 @@
     </div>
     }@else {
         <div class="row">
-            <h1 class="text-center">Nenhum Fornecedor Cadastrado</h1>
+            <h1 class="text-center">Nenhum fornecedor cadastrado!</h1>
         </div>
     }
 </div>
