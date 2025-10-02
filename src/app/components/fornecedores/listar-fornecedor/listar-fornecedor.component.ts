@@ -43,4 +43,7 @@ export class ListarFornecedorComponent implements OnInit {
       }
     });
   }
+  viewProdutosFornecedor(id: number) {
+    this.router.navigate(['/fornecedor', id, 'produtos']);
+  }
 }

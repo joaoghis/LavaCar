@@ -23,4 +23,7 @@ export class ProdutoService {
   getProdutoByID(id: number) {
     return this.dbService.produtos.get(id);
   }
+  getProdutosByFornecedorId(fornecedorId: number): Promise<Produto[]> {
+    return this.dbService.produtos.where('fornecedorId').equals(fornecedorId).toArray();
+  }
 }

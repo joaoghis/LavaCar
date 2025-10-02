@@ -9,6 +9,7 @@
                     <th scope="col" class="text-center">Nome</th>
                     <th scope="col" class="text-center">CNPJ</th>
                     <th scope="col" class="text-center">Telefone</th>
+                    <th scope="col" class="text-center">Opções</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,8 +22,8 @@
                     <td class="text-center">
                         <i class="bi bi-pen edit-icon" (click)="editFornecedor(fornecedor.id!)"></i>
                         <i class="bi bi-trash mx-2" (click)="deleteFornecedor(fornecedor.id!)"></i>
+                        <i class="bi bi-eye" (click)="viewProdutosFornecedor(fornecedor.id!)"></i>
                     </td>
-                
                 </tr>
                 }
             </tbody>
