@@ -2,6 +2,12 @@
     @if(fornecedores.length > 0){
     <div class="row">
         <h1 class="text-center">Fornecedores Cadastrados</h1>
+        <div class="row mb-3">
+            <label for="filtro" class="col-sm-2 col-form-label fw-bold text-end">Pesquisar:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control mb-3" id="filtro" [formControl]="filtro" />
+            </div>
+        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -13,7 +19,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for(fornecedor of fornecedores; track fornecedor.id){
+                @for(fornecedor of fornecedoresPaginados; track fornecedor.id){
                 <tr>
                     <th scope="row" class="text-center">{{ fornecedor.id}}</th>
                     <td>{{ fornecedor.nome }}</td>
@@ -28,6 +34,23 @@
                 }
             </tbody>
         </table>
+        @if(totalPages > 1){
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" [class.disabled]="paginaAtual === 1" (click)="anterior()">
+                        <a class="page-link">Anterior</a>
+                    </li>
+                    @for (pagina of paginasArray; track pagina) {
+                        <li class="page-item" [class.active]="pagina === paginaAtual"(click)="irParaPagina(pagina)">
+                            <a class="page-link">{{ pagina }}</a>
+                        </li>
+                    }
+                    <li class="page-item" [class.disabled]="paginaAtual === totalPages"(click)="proxima()">
+                        <a class="page-link">Próxima</a>
+                    </li>
+                </ul>
+            </nav>
+        }
     </div>
     }@else {
         <div class="row">
