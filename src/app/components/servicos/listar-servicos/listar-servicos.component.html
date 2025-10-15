@@ -1,0 +1,31 @@
+<div class="container">
+    @if(servicos.length > 0){
+        <div class="row col-md-8 offset-md-2">
+            <h1 class="text-center">Serviços Cadastrados</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">#</th>
+                        <th scope="col" class="text-center">Nome</th>
+                        <th scope="col" class="text-center">Descrição</th>
+                        <th scope="col" class="text-center">Preço</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (servico of servicos; track servico.id) {
+                        <tr>
+                            <th scope="row" class="text-center">{{ servico.id}}</th>
+                            <td>{{ servico.nome }}</td>
+                            <td>{{ servico.descricao }}</td>
+                            <td class="text-center">{{ servico.preco }}</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }@else {
+        <div class="row">
+            <h1 class="text-center">Nenhum Serviço Cadastrado</h1>
+        </div>
+    }
+</div>

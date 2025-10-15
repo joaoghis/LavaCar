@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import Dexie, { Table } from 'dexie';
 import { Fornecedor } from '../models/fornecedor.model';
-import { ProdutoServico } from '../models/produto-servico.model';
 import { Produto } from '../models/produto.model';
 import { Servico } from '../models/servico.model';
+import { ProdutoService } from '../models/produto-servico.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class DbService extends Dexie {
   fornecedores!: Table<Fornecedor, number>;
   produtos!: Table<Produto, number>;
   servicos!: Table<Servico, number>;
-  produtosServico!: Table<ProdutoServico, [number, number]>;
+  produtosServico!: Table<ProdutoService, [number, number]>;
 
   constructor() { 
     super('LavaCarDB');
