@@ -8,6 +8,7 @@ import { Fornecedor } from '../../../models/fornecedor.model';
 import { FornecedorService } from '../../../services/fornecedor.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-cadastro-produto',
   imports: [ReactiveFormsModule, CommonModule],
@@ -74,7 +75,6 @@ export class CadastroProdutoComponent implements OnInit {
       });
     }
   }
-
   loadFornecedores() {
     this.fornecedorService.getAllFornecedores().then(fornecedores => {
       this.fornecedores = fornecedores;

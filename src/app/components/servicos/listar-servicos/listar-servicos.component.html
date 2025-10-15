@@ -9,6 +9,7 @@
                         <th scope="col" class="text-center">Nome</th>
                         <th scope="col" class="text-center">Descrição</th>
                         <th scope="col" class="text-center">Preço</th>
+                        <th scope="col" class="text-center">Opções</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -18,6 +19,10 @@
                             <td>{{ servico.nome }}</td>
                             <td>{{ servico.descricao }}</td>
                             <td class="text-center">{{ servico.preco }}</td>
+                            <td class="text-center">
+                                <i class="bi bi-pen edit-icon" (click)="editServico(servico.id!)"></i>
+                                <i class="bi bi-trash mx-2" (click)="deleteServico(servico.id!)"></i>
+                            </td>
                         </tr>
                     }
                 </tbody>

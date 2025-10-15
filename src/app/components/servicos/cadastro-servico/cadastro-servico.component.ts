@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { Servico } from '../../../models/servico.model';
 import { ServicoService } from './../../../services/servico.service';
 import { Produto } from '../../../models/produto.model';
-import { ProdutoService } from '../../../models/produto-servico.model';
+import { ProdutoService } from '../../../services/produto.service';
 
 @Component({
   selector: 'app-cadastro-servico',
@@ -17,18 +17,16 @@ import { ProdutoService } from '../../../models/produto-servico.model';
 })
 export class CadastroServicoComponent implements OnInit {
   private fb = inject(FormBuilder);
-  produtos: Produto[] = [];
-  servicoId!: number;
   formServico = this.fb.group({
     nome: ['', Validators.required],
     descricao: [''],
     preco: [null as number | null, Validators.required],
     produtos: [null as number | null]
   });
-
+  produtos: Produto[] = [];
+  servicoId!: number;
   constructor(private servicoService: ServicoService, private produtoServico: ProdutoService, private router: Router, private route: ActivatedRoute) {  
   }
-
   async ngOnInit() {
     this.servicoId = Number(this.route.snapshot.paramMap.get('id'));
     if (this.servicoId) {
@@ -57,6 +55,20 @@ export class CadastroServicoComponent implements OnInit {
         Swal.fire('Cadastro realizado!', 'O serviço foi cadastrado com sucesso.', 'success');
         this.router.navigate(['servicos/listar-servicos']);
       });
+    }else {
+      this.editServico();
     }
+  }
+  editServico() {
+    const servicoEditado: Servico = {
+      id: this.servicoId,
+      nome: this.formServico.value.nome!,
+      descricao: this.formServico.value.descricao!,
+      preco: Number(this.formServico.value.preco!),
+    };
+    this.servicoService.updateServico(servicoEditado).then(() => {
+      Swal.fire('Cadastro atualizado!', 'O serviço foi atualizado com sucesso.', 'success');
+      this.router.navigate(['servicos/listar-servicos']);
+    });
   }
 }
