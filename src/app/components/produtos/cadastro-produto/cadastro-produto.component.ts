@@ -11,8 +11,7 @@ import { FornecedorService } from '../../../services/fornecedor.service';
 @Component({
   selector: 'app-cadastro-produto',
   imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './cadastro-produto.component.html',
-  styleUrl: './cadastro-produto.component.css'
+  templateUrl: './cadastro-produto.component.html'
 })
 export class CadastroProdutoComponent implements OnInit {
   private fb = inject(FormBuilder);

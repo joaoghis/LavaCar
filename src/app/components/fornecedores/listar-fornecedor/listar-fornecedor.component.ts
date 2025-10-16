@@ -8,9 +8,9 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-listar-fornecedor',
   imports: [ReactiveFormsModule, FormsModule],
-  templateUrl: './listar-fornecedor.component.html',
-  styleUrl: './listar-fornecedor.component.css'
+  templateUrl: './listar-fornecedor.component.html'
 })
+
 export class ListarFornecedorComponent implements OnInit {
   fornecedores: Fornecedor[] = [];
   filtro = new FormControl('');

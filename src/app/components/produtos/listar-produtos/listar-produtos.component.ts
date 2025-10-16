@@ -11,8 +11,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-listar-produtos',
   imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './listar-produtos.component.html',
-  styleUrl: './listar-produtos.component.css'
+  templateUrl: './listar-produtos.component.html'
 })
 export class ListarProdutosComponent implements OnInit {
   produtos: Produto[] = [];

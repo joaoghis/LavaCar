@@ -7,8 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-listar-servicos',
   imports: [],
-  templateUrl: './listar-servicos.component.html',
-  styleUrl: './listar-servicos.component.css'
+  templateUrl: './listar-servicos.component.html'
 })
 export class ListarServicosComponent implements OnInit {
   servicos: Servico[] = [];

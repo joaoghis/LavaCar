@@ -9,8 +9,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-cadastro-fornecedor',
   imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './cadastro-fornecedor.component.html',
-  styleUrl: './cadastro-fornecedor.component.css'
+  templateUrl: './cadastro-fornecedor.component.html'
 })
 
 export class CadastroFornecedorComponent implements OnInit {

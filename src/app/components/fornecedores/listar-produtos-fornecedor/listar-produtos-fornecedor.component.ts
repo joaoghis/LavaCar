@@ -7,8 +7,7 @@ import { FornecedorService } from '../../../services/fornecedor.service';
 @Component({
   selector: 'app-listar-produtos-fornecedor',
   imports: [],
-  templateUrl: './listar-produtos-fornecedor.component.html',
-  styleUrl: './listar-produtos-fornecedor.component.css'
+  templateUrl: './listar-produtos-fornecedor.component.html'
 })
 export class ListarProdutosFornecedorComponent {
   produtos: Produto[] = [];
