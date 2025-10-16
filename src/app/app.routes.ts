@@ -19,4 +19,5 @@ export const routes: Routes = [
     { path: 'fornecedor/:id/produtos', component: ListarProdutosFornecedorComponent },
     { path: 'servicos/cadastro-servico', component: CadastroServicoComponent },
     { path: 'servicos/listar-servicos', component: ListarServicosComponent },
+    { path: 'servicos/editar-servico/:id', component: CadastroServicoComponent },
 ];
