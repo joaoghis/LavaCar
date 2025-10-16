@@ -1,4 +1,4 @@
-export class ProdutoService {
+export class ProdutoServico {
     servicoId: number;
     produtoId: number;
     quantidade: number;

@@ -3,7 +3,9 @@ import Dexie, { Table } from 'dexie';
 import { Fornecedor } from '../models/fornecedor.model';
 import { Produto } from '../models/produto.model';
 import { Servico } from '../models/servico.model';
-import { ProdutoService } from '../models/produto-servico.model';
+import { ProdutoServico } from '../models/produto-servico.model';
+import { Cliente } from '../models/cliente.model';
+import { Funcionario } from '../models/funcionario.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,9 @@ export class DbService extends Dexie {
   fornecedores!: Table<Fornecedor, number>;
   produtos!: Table<Produto, number>;
   servicos!: Table<Servico, number>;
-  produtosServico!: Table<ProdutoService, [number, number]>;
+  produtosServico!: Table<ProdutoServico, [number, number]>;
+  clientes!: Table<Cliente, number>;
+  funcionarios!: Table<Funcionario, number>;
 
   constructor() { 
     super('LavaCarDB');
@@ -20,7 +24,9 @@ export class DbService extends Dexie {
       fornecedores: '++id, nome, cnpj, fone',
       produtos: '++id, nome, preco, quantidade, fornecedorId',
       servicos: '++id, nome, descricao, preco',
-      produtosServico: '[servicoId+produtoId], servicoId, produtoId, quantidade'
+      produtosServico: '[servicoId+produtoId], servicoId, produtoId, quantidade',
+      clientes: '++id, nome, fone, email, fotoUrl, endereco',
+      funcionarios: '++id, nome, fone, email, fotoUrl, funcao, dataAdmissao'
     });
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ProdutoService } from './../models/produto-servico.model';
+import { ProdutoServico } from './../models/produto-servico.model';
 import { DbService } from './db.service';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { DbService } from './db.service';
 export class ProdutoServicoService {
   constructor(private dbService: DbService) { 
   }
-  getAllProdutosServicos(): Promise<ProdutoService[]> {
+  getAllProdutosServicos(): Promise<ProdutoServico[]> {
     return this.dbService.produtosServico.toArray();
   }
 }

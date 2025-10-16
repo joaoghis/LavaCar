@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Servico } from '../../../models/servico.model';
 import { ServicoService } from './../../../services/servico.service';
@@ -25,9 +24,10 @@ export class CadastroServicoComponent implements OnInit {
   });
   produtos: Produto[] = [];
   servicoId!: number;
-  constructor(private servicoService: ServicoService, private produtoServico: ProdutoService, private router: Router, private route: ActivatedRoute) {  
+  constructor(private servicoService: ServicoService, private produtoService: ProdutoService, private route: ActivatedRoute, private router: Router) {  
   }
   async ngOnInit() {
+
     this.servicoId = Number(this.route.snapshot.paramMap.get('id'));
     if (this.servicoId) {
       const servico = await this.servicoService.getServicoById(this.servicoId);
@@ -39,7 +39,7 @@ export class CadastroServicoComponent implements OnInit {
         });
       }
     }else {
-      this.produtoServico.getAllProdutos().then((produtos) => {
+      this.produtoService.getAllProdutos().then((produtos) => {
         this.produtos = produtos;
       });
     }
@@ -60,15 +60,18 @@ export class CadastroServicoComponent implements OnInit {
     }
   }
   editServico() {
-    const servicoEditado: Servico = {
-      id: this.servicoId,
-      nome: this.formServico.value.nome!,
-      descricao: this.formServico.value.descricao!,
-      preco: Number(this.formServico.value.preco!),
-    };
-    this.servicoService.updateServico(servicoEditado).then(() => {
-      Swal.fire('Cadastro atualizado!', 'O serviço foi atualizado com sucesso.', 'success');
-      this.router.navigate(['servicos/listar-servicos']);
-    });
+    if (this.formServico.valid) {
+      const servicoEditado: Servico = {
+        id: this.servicoId,
+        nome: this.formServico.value.nome!,
+        descricao: this.formServico.value.descricao!,
+        preco: Number(this.formServico.value.preco!),
+      };
+    
+      this.servicoService.updateServico(servicoEditado).then(() => {
+        Swal.fire('Cadastro atualizado!', 'O serviço foi atualizado com sucesso.', 'success');
+        this.router.navigate(['servicos/listar-servicos']);
+      });
+    }
   }
 }

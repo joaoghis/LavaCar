@@ -1,13 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import { Produto } from '../../../models/produto.model';
 import { ProdutoService } from '../../../services/produto.service';
-import { CommonModule } from '@angular/common';
-import Swal from 'sweetalert2';
 import { Fornecedor } from '../../../models/fornecedor.model';
 import { FornecedorService } from '../../../services/fornecedor.service';
-import { ActivatedRoute, Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-cadastro-produto',
