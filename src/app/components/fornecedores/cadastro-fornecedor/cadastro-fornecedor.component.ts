@@ -1,77 +1,49 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Fornecedor } from '../../../models/fornecedor.model';
-import { FornecedorService } from '../../../services/fornecedor.service';
-import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FornecedorService } from '../../../services/fornecedor.service';
+import { DynamicFormComponent } from '../../../shared/dynamic-form/dynamic-form.component';
+import { DynamicFormField } from '../../../shared/dynamic-form/dynamic-form-field.model';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cadastro-fornecedor',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [CommonModule, DynamicFormComponent],
   templateUrl: './cadastro-fornecedor.component.html'
 })
 
 export class CadastroFornecedorComponent implements OnInit {
-  fornecedores: Fornecedor[] = [];
   fornecedorId!: number;
-  formFornecedor = new FormGroup({
-    nome: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    cnpj: new FormControl('', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]),
-    fone: new FormControl('', [Validators.required, Validators.minLength(11), Validators.maxLength(11)])
-  });
-  
-  constructor(private fornecedorService: FornecedorService, private router: Router, private route: ActivatedRoute) {}
+  fields: DynamicFormField[] = [];
+  initialData: any = {};
+  constructor(private fornecedorService: FornecedorService, private route: ActivatedRoute, private router: Router) {
+  }
   async ngOnInit() {
     this.fornecedorId = Number(this.route.snapshot.paramMap.get('id'));
+    this.fields = [
+      { name: 'nome', label: 'Nome do Fornecedor', type: 'text', validators: [] },
+      { name: 'cnpj', label: 'CNPJ', type: 'text', validators: [] },
+      { name: 'fone', label: 'Telefone', type: 'text', validators: [] }
+    ];
     if (this.fornecedorId) {
-      const fornecedor = await
-        this.fornecedorService.getFornecedorById(this.fornecedorId);
-        if (fornecedor) {
-          this.formFornecedor = new FormGroup({
-            nome: new FormControl(fornecedor.nome),
-            cnpj: new FormControl(fornecedor.cnpj),
-            fone: new FormControl(fornecedor.fone),
-          });
+      const fornecedor = await this.fornecedorService.getFornecedorById(this.fornecedorId);
+      if (fornecedor) {
+        this.initialData = {
+          nome: fornecedor.nome,
+          cnpj: fornecedor.cnpj,
+          fone: fornecedor.fone
         };
-    }
-  }
-  
-  addFornecedor() {
-    if (this.formFornecedor.valid) {
-      if (this.fornecedorId) {
-        this.editFornecedor();
-      } else {
-        const novoFornecedor: Fornecedor = {
-          nome: this.formFornecedor.value.nome!,
-          cnpj: this.formFornecedor.value.cnpj!,
-          fone: this.formFornecedor.value.fone!
-        };
-        this.fornecedorService.addFornecedor(novoFornecedor).then(() => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Cadastro realizado!',
-            text: 'O fornecedor foi cadastrado com sucesso.',
-            timer: 5000,
-            showConfirmButton: true,
-            draggable: true
-          });
-          this.formFornecedor.reset();
-        });
       }
     }
   }
-
-  editFornecedor() {
-    const fornecedorEditado: Fornecedor = {
-      id: this.fornecedorId,
-      nome: this.formFornecedor.value.nome!,
-      cnpj: this.formFornecedor.value.cnpj!,
-      fone: this.formFornecedor.value.fone!
-    };
-    this.fornecedorService.updateFornecedor(fornecedorEditado).then(() => {
-      Swal.fire('Atualizado!', 'O fornecedor foi atualizado com sucesso.', 'success');
-      this.router.navigate(['fornecedores/listar-fornecedores']);
-    });
-  }
+  async onFormSubmit(data: any) {
+    if (!this.fornecedorId) {
+      await this.fornecedorService.addFornecedor(data);
+      Swal.fire('Sucesso', 'Fornecedor cadastrado com sucesso', 'success');
+    } else {
+      await this.fornecedorService.updateFornecedor({ ...data, id: this.fornecedorId });
+      Swal.fire('Sucesso', 'Fornecedor atualizado com sucesso', 'success');
+    }
+    this.router.navigate(['fornecedores/listar-fornecedores']);
+  } 
 }

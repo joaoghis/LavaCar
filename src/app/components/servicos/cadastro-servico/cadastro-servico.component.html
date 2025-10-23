@@ -1,45 +1,13 @@
 <div class="container">
-    <div class="col-md-6 offset-md-3">
-        @if(servicoId) {
-            <h1 class="text-center">Editar Serviço</h1>
-        }@else {
-            <h1 class="text-center">Cadastrar Serviço</h1>
-        }
-        <form [formGroup]="formServico" (ngSubmit)="addServico()" class="mb-5">
-            <div class="mb-3">
-                <label for="nome" class="form-label">Nome do Serviço:</label>
-                <input type="text" class="form-control" id="nome" formControlName="nome" [ngClass]="{'is-invalid': formServico.get('nome')?.invalid && formServico.get('nome')?.touched,'is-valid': formServico.get('nome')?.valid && formServico.get('nome')?.touched 
-                }" required />
-                @if(formServico.get('nome')?.invalid && formServico.get('nome')?.touched) {
-                    <div class="form-text text-danger">Nome é obrigatório.</div>
-                }
-            </div>
-            <div class="mb-3">
-                <label for="descricao" class="form-label">Descrição:</label>
-                <input type="text" class="form-control" id="descricao" formControlName="descricao" [ngClass]="{
-                    'is-invalid': formServico.get('descricao')?.invalid && formServico.get('descricao')?.touched,
-                    'is-valid': formServico.get('descricao')?.valid && formServico.get('descricao')?.touched }"
-                required />
-                @if(formServico.get('descricao')?.invalid && formServico.get('descricao')?.touched) {
-                    <div class="form-text text-danger">Descrição é obrigatório.</div>
-                }
-            </div>
-            <div class="mb-3">
-                <label for="number" class="form-label">Preço:</label>
-                <input type="number" class="form-control" id="preco" formControlName="preco" [ngClass]="{
-                    'is-invalid': formServico.get('preco')?.invalid && formServico.get('preco')?.touched, 'is-valid': formServico.get('preco')?.valid && formServico.get('preco')?.touched 
-                }"required />
-                @if(formServico.get('preco')?.invalid && formServico.get('preco')?.touched) {
-                    <div class="form-text text-danger">Preço é obrigatório.</div>
-                }
-            </div>
-            @if(formServico.invalid){
-                <div class="form-text text-danger mb-4">Preencha todos os campos obrigatórios.</div>
-            }@else {
-                <div class="form-text text-success mb-4">Campos obrigatórios preenchidos.</div>
-            }
-            <button type="submit" class="btn btn-primary" [disabled]="formServico.invalid">Salvar</button>
-            <button type="reset" class="ms-2 btn btn-danger">Limpar</button>
-        </form>
-    </div>
+  <div class="col-md-6 offset-md-3">
+    <h1 class="text-center">
+      {{ servicoId ? 'Editar Serviço' : 'Cadastrar Serviço' }}
+    </h1>
+    <app-dynamic-form
+      [fields]="fields"
+      [initialData]="initialData"
+      [submitText]="servicoId ? 'Atualizar' : 'Salvar'"
+      (formSubmit)="onFormSubmit($event)">
+    </app-dynamic-form>
+  </div>
 </div>

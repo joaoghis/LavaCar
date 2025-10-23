@@ -1,81 +1,53 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import Swal from 'sweetalert2';
-import { Produto } from '../../../models/produto.model';
 import { ProdutoService } from '../../../services/produto.service';
-import { Fornecedor } from '../../../models/fornecedor.model';
 import { FornecedorService } from '../../../services/fornecedor.service';
+import { DynamicFormComponent } from '../../../shared/dynamic-form/dynamic-form.component';
+import { DynamicFormField } from '../../../shared/dynamic-form/dynamic-form-field.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cadastro-produto',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [CommonModule, DynamicFormComponent],
   templateUrl: './cadastro-produto.component.html'
 })
 export class CadastroProdutoComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  formProduto = this.fb.group({
-    nome: ['', Validators.required],
-    preco: [null as number | null, Validators.required],
-    quantidade: [null as number | null, Validators.required],
-    fornecedorId: [null as number | null, Validators.required]
-  });
-  fornecedores: Fornecedor[] = [];
   produtoId!: number;
-  constructor(private produtoService: ProdutoService, private fornecedorService: FornecedorService, private route: ActivatedRoute, private router: Router) {
+  fields: DynamicFormField[] = [];
+  initialData: any = {};
+  constructor(private produtoService: ProdutoService, private fornecedorService: FornecedorService, private route: ActivatedRoute, private router: Router) {  
   }
   async ngOnInit() {
-    this.loadFornecedores();
     this.produtoId = Number(this.route.snapshot.paramMap.get('id'));
+    const fornecedores = await this.fornecedorService.getAllFornecedores();
+    this.fields = [
+      { name: 'nome', label: 'Nome do Produto', type: 'text', validators: [] },
+      { name: 'preco', label: 'Preço', type: 'number', validators: [] },
+      { name: 'quantidade', label: 'Quantidade', type: 'number', validators: [] },
+      { name: 'fornecedorId', label: 'Fornecedor', type: 'select', options: fornecedores.map(f => ({ value: f.id, label: `${f.nome} - ${f.cnpj} - ${f.fone}` }))}
+    ];
     if (this.produtoId) {
-      const produto = await this.produtoService.getProdutoByID(this.produtoId);
+      const produto = await this.produtoService.getProdutoById(this.produtoId);
       if (produto) {
-        this.formProduto.patchValue({
+        this.initialData = {
           nome: produto.nome,
-          preco: Number(produto.preco),
-          quantidade: Number(produto.quantidade),
-          fornecedorId: Number(produto.fornecedorId)
-        });
-      };
-    }
-  }
-  addProduto() {
-    if (this.formProduto.valid) {
-      if (!this.produtoId) {
-        const novoProduto: Produto = {
-          nome: this.formProduto.value.nome!,
-          preco: Number(this.formProduto.value.preco!),
-          quantidade: Number(this.formProduto.value.quantidade!),
-          fornecedorId: Number(this.formProduto.value.fornecedorId!)
+          preco: produto.preco,
+          quantidade: produto.quantidade,
+          fornecedorId: produto.fornecedorId
         };
-        this.produtoService.addProduto(novoProduto).then(() => {
-          Swal.fire('Cadastro realizado!', 'O produto foi cadastrado com sucesso!', 'success');
-          this.router.navigate(['produtos/listar-produtos']);
-        });
-      } else {
-        this.editProduto();
       }
-    } 
-  }
-  editProduto() {
-    if (this.formProduto.valid) {
-      const produtoEditado: Produto = {
-        id: this.produtoId,
-        nome: this.formProduto.value.nome!,
-        preco: Number(this.formProduto.value.preco!),
-        quantidade: Number(this.formProduto.value.quantidade!),
-        fornecedorId: Number(this.formProduto.value.fornecedorId!)
-      };
-      this.produtoService.updateProduto(produtoEditado).then(() => {
-        Swal.fire('Cadastro realizado!', 'O produto foi atualizado com sucesso.', 'success');
-        this.router.navigate(['produtos/listar-produtos']);
-      });
     }
   }
-  loadFornecedores() {
-    this.fornecedorService.getAllFornecedores().then(fornecedores => {
-      this.fornecedores = fornecedores;
-    });
+  async onFormSubmit(data: any) {
+    data.fornecedorId = Number(data.fornecedorId);
+    if (!this.produtoId) {
+      await this.produtoService.addProduto(data);
+      Swal.fire('Sucesso', 'Produto cadastrado com sucesso', 'success');
+    } else {
+      await this.produtoService.updateProduto({ ...data, id: this.produtoId });
+      Swal.fire('Sucesso', 'Produto atualizado com sucesso', 'success');
+    }
+    this.router.navigate(['produtos/listar-produtos']);
   }
 }

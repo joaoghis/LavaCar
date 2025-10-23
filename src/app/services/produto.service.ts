@@ -20,7 +20,7 @@ export class ProdutoService {
   deleteProduto(id: number) {
     return this.dbService.produtos.delete(id);
   }
-  getProdutoByID(id: number) {
+  getProdutoById(id: number) {
     return this.dbService.produtos.get(id);
   }
   getProdutosByFornecedorId(fornecedorId: number): Promise<Produto[]> {

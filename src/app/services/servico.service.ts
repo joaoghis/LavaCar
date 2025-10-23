@@ -6,7 +6,6 @@ import { DbService } from './db.service';
   providedIn: 'root'
 })
 export class ServicoService {
-
   constructor(private dbService: DbService) { 
   }
   addServico(servico: Servico) {

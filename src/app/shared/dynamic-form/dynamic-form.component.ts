@@ -6,25 +6,20 @@ import { DynamicFormField } from './dynamic-form-field.model';
 
 @Component({
   selector: 'app-dynamic-form',
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './dynamic-form.component.html',
-  styleUrls: ['./dynamic-form.component.css']
+  templateUrl: './dynamic-form.component.html'
 })
 export class DynamicFormComponent implements OnInit, OnChanges {
   @Input() fields: DynamicFormField[] = [];
   @Input() initialData: any = {};
   @Input() submitText = 'Salvar';
   @Output() formSubmit = new EventEmitter<any>();
-
   form!: FormGroup;
-
-  constructor(private fb: FormBuilder) {}
-
+  constructor(private fb: FormBuilder) {
+  }
   ngOnInit() {
     this.createForm();
   }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['fields'] && this.fields) {
       this.createForm();
@@ -33,7 +28,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
       this.form.patchValue(this.initialData);
     }
   }
-
   createForm() {
     const group: any = {};
     for (const field of this.fields) {
@@ -44,7 +38,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
       this.form.patchValue(this.initialData);
     }
   }
-
   onSubmit() {
     if (this.form.valid) {
       this.formSubmit.emit(this.form.value);
@@ -52,7 +45,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
       this.form.markAllAsTouched();
     }
   }
-
   inputClasses(name: string) {
     const control = this.form.get(name);
     return {
