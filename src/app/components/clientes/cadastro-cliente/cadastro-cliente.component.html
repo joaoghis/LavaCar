@@ -1,1 +1,27 @@
-<p>cadastro-cliente works!</p>
+<div class="container">
+    <div class="col-md-6 offset-md-3">
+        <h1 class="text-center">Cadastrar Cliente</h1>
+        <form [formGroup]="formCliente" class="mb-5">
+            <div class="mb-3"><!-- Nome --></div>
+            <div class="mb-3"><!-- Telefone --></div>
+            <div class="mb-3"><!-- E-mail --></div>
+            <div class="mb-3"><!-- Endereço --></div>
+            <div class="mb-3">
+                <label for="fotoInput" class="form-label">Foto:</label>
+                <input type="file" id="fotoInput" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+            </div>
+            @if(fotoPreviewUrl){
+                <div class="mb-3">
+                    <img [src]="fotoPreviewUrl" alt="Pré-visualização da Foto" class="img-thumbnail" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                </div>
+            }
+            @if(formCliente.invalid){
+                <div class="form-text text-danger mb-4">Preencha todos os campos obrigatórios.</div>
+            }@else {
+                <div class="form-text text-success mb-4">Campos obrigatórios preenchidos.</div>
+            }
+            <button type="submit" class="btn btn-primary" [disabled]="formCliente.invalid">Salvar</button>
+            <button type="reset" class="ms-2 btn btn-danger">Limpar</button>
+        </form>
+    </div>
+</div>

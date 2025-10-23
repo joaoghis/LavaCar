@@ -6,6 +6,9 @@ import { ListarProdutosComponent } from './components/produtos/listar-produtos/l
 import { CadastroServicoComponent } from './components/servicos/cadastro-servico/cadastro-servico.component';
 import { ListarServicosComponent } from './components/servicos/listar-servicos/listar-servicos.component';
 import { ListarProdutosFornecedorComponent } from './components/fornecedores/listar-produtos-fornecedor/listar-produtos-fornecedor.component';
+import { AssociacaoProdutosServicoComponent } from './components/servicos/associacao-produtos-servico/associacao-produtos-servico.component';
+import { CadastroClienteComponent } from './components/clientes/cadastro-cliente/cadastro-cliente.component';
+import { ListarClientesComponent } from './components/clientes/listar-clientes/listar-clientes.component';
 import { HomeComponent } from './components/home/home.component';
 
 export const routes: Routes = [
@@ -20,4 +23,7 @@ export const routes: Routes = [
     { path: 'servicos/cadastro-servico', component: CadastroServicoComponent },
     { path: 'servicos/listar-servicos', component: ListarServicosComponent },
     { path: 'servicos/editar-servico/:id', component: CadastroServicoComponent },
+    { path: 'servico/:id/produtos', component: AssociacaoProdutosServicoComponent },
+    { path: 'clientes/cadastro-cliente', component: CadastroClienteComponent },
+    { path: 'clientes/listar-clientes', component: ListarClientesComponent },
 ];

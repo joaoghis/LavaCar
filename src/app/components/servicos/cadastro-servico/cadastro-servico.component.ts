@@ -30,8 +30,8 @@ export class CadastroServicoComponent implements OnInit {
       if (servico) {
         this.initialData = {
           nome: servico.nome,
-          cnpj: servico.descricao,
-          fone: servico.preco
+          descricao: servico.descricao,
+          preco: servico.preco
         };
       }
     }

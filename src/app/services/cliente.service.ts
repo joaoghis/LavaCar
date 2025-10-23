@@ -8,6 +8,7 @@ import { DbService } from './db.service';
 export class ClienteService {
   constructor(private dbService: DbService) { 
   }
+  
   async addCliente(cliente: Cliente): Promise<number> {
     return await this.dbService.clientes.add(cliente);
   }

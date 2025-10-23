@@ -42,4 +42,8 @@ export class ListarServicosComponent implements OnInit {
       }
     });
   }
+
+  associarProdutos(servicoId: number) {
+    this.router.navigate(['/servico/', servicoId, 'produtos']);
+  }
 }
