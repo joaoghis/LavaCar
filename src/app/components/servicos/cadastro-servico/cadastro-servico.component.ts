@@ -23,7 +23,7 @@ export class CadastroServicoComponent implements OnInit {
     this.fields = [
       { name: 'nome', label: 'Nome do Serviço', type: 'text', validators: [] },
       { name: 'descricao', label: 'Descrição', type: 'text', validators: [] },
-      { name: 'preco', label: 'Preco', type: 'number', validators: [] }
+      { name: 'preco', label: 'Preço', type: 'number', validators: [] }
     ];
     if (this.servicoId) {
       const servico = await this.servicoService.getServicoById(this.servicoId);
