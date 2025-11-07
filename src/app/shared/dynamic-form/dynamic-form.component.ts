@@ -8,35 +8,45 @@ import { DynamicFormField } from './dynamic-form-field.model';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './dynamic-form.component.html'
 })
+
 export class DynamicFormComponent implements OnInit, OnChanges {
   @Input() fields: DynamicFormField[] = [];
   @Input() initialData: any = {};
   @Input() submitText = 'Salvar';
   @Output() formSubmit = new EventEmitter<any>();
   form!: FormGroup;
+
   constructor(private fb: FormBuilder) {
   }
+
   ngOnInit() {
     this.createForm();
   }
+
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['fields'] && this.fields) {
-      this.createForm();
+    if (changes['fields'] && !changes['fields'].firstChange) {
+        this.createForm();
     }
-    if (changes['initialData'] && this.form) {
-      this.form.patchValue(this.initialData);
+    if (this.initialData && this.form) {
+      Object.keys(this.initialData).forEach(key => {
+        if (this.form.get(key)) {
+          this.form.get(key)?.setValue(this.initialData[key]);
+        }
+      });
     }
   }
+
   createForm() {
     const group: any = {};
     for (const field of this.fields) {
-      group[field.name] = ['', field.validators ?? []];
+      group[field.name] = [{ value: '', disabled: field.disabled }, field.validators ?? []];
     }
     this.form = this.fb.group(group);
     if (this.initialData) {
       this.form.patchValue(this.initialData);
     }
   }
+
   onSubmit() {
     if (this.form.valid) {
       this.formSubmit.emit(this.form.value);
@@ -44,6 +54,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
       this.form.markAllAsTouched();
     }
   }
+ 
   inputClasses(name: string) {
     const control = this.form.get(name);
     return {

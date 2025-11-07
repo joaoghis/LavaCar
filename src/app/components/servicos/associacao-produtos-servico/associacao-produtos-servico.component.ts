@@ -5,13 +5,12 @@ import { ProdutoService } from '../../../services/produto.service';
 import { ProdutoServicoService } from '../../../services/produto-servico.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ProdutoServico } from '../../../models/produto-servico.model';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-associacao-produtos-servico',
-  imports: [CommonModule, DragDropModule],
+  imports: [CommonModule],
   templateUrl: './associacao-produtos-servico.component.html',
   styleUrls: ['./associacao-produtos-servicos.component.css']
 })
@@ -63,28 +62,8 @@ export class AssociacaoProdutosServicoComponent implements OnInit {
     }
   }
 
-  dropped(event: CdkDragDrop<Produto[]>, isConcluded: boolean) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    }else {
-      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-      const produto = event.container.data[event.currentIndex];
-      if (produto.id !== undefined) {
-        if (this.produtosSelecionadosIds.has(produto.id)) {
-          this.produtosSelecionadosIds.delete(produto.id);
-          this.produtoIdSelecionado = produto.id;
-          this.produtoServicoService.getAssociacoesById(this.servicoId, produto.id).then((associacoes: ProdutoServico[]) => {
-            if (produto.id !== undefined) {
-              this.produtoServicoService.deleteServicoProdutoAssociacao(this.servicoId, produto.id);
-            }
-          });
-        }else {
-          this.produtoIdSelecionado = produto.id;
-          this.solicitarQuantidadeDoProduto();
-        }
-      }
-    }
-  }
+  
+  
 
   async solicitarQuantidadeDoProduto(): Promise<void> {
     const { value: quantidadeInput } = await Swal.fire({
